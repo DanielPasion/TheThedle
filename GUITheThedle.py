@@ -155,7 +155,59 @@ def setWordFive(guessFive):
     fiveWord6.config(text=fiveArray[5])  
     checkAnswerFive(fiveArray)        
 
-
+def letterToNumber(char):
+    if (char == 'A'):
+        return 0 
+    if (char == 'B'):
+        return 1
+    if (char == 'C'):
+        return 2
+    if (char == 'D'):
+        return 3
+    if (char == 'E'):
+        return 4
+    if (char == 'F'):
+        return 5
+    if (char == 'G'):
+        return 6 
+    if (char == 'H'):
+        return 7 
+    if (char == 'I'):
+        return 8
+    if (char == 'J'):
+        return 9
+    if (char == 'K'):
+        return 10
+    if (char == 'L'):
+        return 11
+    if (char == 'M'):
+        return 12
+    if (char == 'N'):
+        return 13
+    if (char == 'O'):
+        return 14 
+    if (char == 'P'):
+        return 15
+    if (char == 'Q'):
+        return 16
+    if (char == 'R'):
+        return 17
+    if (char == 'S'):
+        return 18
+    if (char == 'T'):
+        return 19
+    if (char == 'U'):
+        return 20
+    if (char == 'V'):
+        return 21 
+    if (char == 'W'):
+        return 22
+    if (char == 'X'):
+        return 23
+    if (char == 'Y'):
+        return 24
+    if (char == 'Z'):
+        return 25
 
 def determineColor(list):
     color5 = ""
@@ -165,192 +217,106 @@ def determineColor(list):
     color1 = ""
     color0 = ""
     
-    #last letter
-    if(list[5] == electedArray[5]):
+    frequencyGuess = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    frequencyElected = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    
+    for item in list:
+        frequencyGuess[letterToNumber(item)] = frequencyGuess[letterToNumber(item)] + 1
+        
+    for item in electedArray:
+        frequencyElected[letterToNumber(item)] = frequencyElected[letterToNumber(item)] + 1
+    
+    #sixth letter
+    if (list[5] == electedArray[5]):
         color5 = "green"
+        frequencyElected[letterToNumber(list[5])] = frequencyElected[letterToNumber(list[5])] - 1
+        frequencyGuess[letterToNumber(list[5])] = frequencyGuess[letterToNumber(list[5])] - 1
         
-    if(list[5] != electedArray[5]):
-        frequencyOG = 0
-        frequencyGuess = 0
-        for i in range(6):
-            if electedArray[i] == list[5]:
-                frequencyOG = frequencyOG + 1
-            if list[i] == list[5]:
-                frequencyGuess = frequencyGuess + 1
-        
-        if frequencyGuess > frequencyOG:
+    if (list[5] != electedArray[5]):
+        if frequencyGuess[letterToNumber(list[5])] > frequencyElected[letterToNumber(list[5])]:
             color5 = "gray"
-        elif (frequencyGuess <= frequencyOG):
+            frequencyGuess[letterToNumber(list[5])] = frequencyGuess[letterToNumber(list[5])] - 1
+        elif frequencyGuess[letterToNumber(list[5])] <= frequencyElected[letterToNumber(list[5])]:
             color5 = "yellow"
-    
-    
+            frequencyGuess[letterToNumber(list[5])] = frequencyGuess[letterToNumber(list[5])] - 1
+            
+            
     #fifth letter
-    if(list[4] == electedArray[4]):
+    if (list[4] == electedArray[4]):
         color4 = "green"
-    elif(list[4] != electedArray[4]):
-        frequencyOG = 0
-        frequencyGuess = 0
-        for i in range(6):
-            if electedArray[i] == list[4]:
-                frequencyOG = frequencyOG + 1
-        for i in range(5):
-            if list[i] == list[4]:
-                frequencyGuess = frequencyGuess + 1
+        frequencyElected[letterToNumber(list[4])] = frequencyElected[letterToNumber(list[4])] - 1
+        frequencyGuess[letterToNumber(list[4])] = frequencyGuess[letterToNumber(list[4])] - 1
         
-        if (frequencyGuess == 1 and frequencyOG == 1) and (list[5] != electedArray[5]):
+    if (list[4] != electedArray[4]):
+        if frequencyGuess[letterToNumber(list[4])] > frequencyElected[letterToNumber(list[4])]:
+            color4 = "gray"
+            frequencyGuess[letterToNumber(list[4])] = frequencyGuess[letterToNumber(list[4])] - 1
+        elif frequencyGuess[letterToNumber(list[4])] <= frequencyElected[letterToNumber(list[4])]:
             color4 = "yellow"
-        elif (frequencyGuess == 2 and frequencyOG == 2) and (list[5] != electedArray[5]):
-            color4 = "yellow"
-        elif (frequencyGuess == 3 and frequencyOG == 3) and (list[5] != electedArray[5]):
-            color4 = "yellow"
-        else:       
-            if list[4] == electedArray[5] and list[5] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if frequencyGuess > frequencyOG:
-                color4 = "gray"
-            elif (frequencyGuess <= frequencyOG):
-                color4 = "yellow"
-    
+            frequencyGuess[letterToNumber(list[4])] = frequencyGuess[letterToNumber(list[4])] - 1
     
     #fourth letter
-    if(list[3] == electedArray[3]):
+    if (list[3] == electedArray[3]):
         color3 = "green"
+        frequencyElected[letterToNumber(list[3])] = frequencyElected[letterToNumber(list[3])] - 1
+        frequencyGuess[letterToNumber(list[3])] = frequencyGuess[letterToNumber(list[3])] - 1
         
-    elif(list[3] != electedArray[3]):
-        frequencyOG = 0
-        frequencyGuess = 0
-        for i in range(6):
-            if electedArray[i] == list[3]:
-                frequencyOG = frequencyOG + 1
-        for i in range(4):
-            if list[i] == list[3]:
-                frequencyGuess = frequencyGuess + 1
-                
-        if (frequencyGuess == 1 and frequencyOG == 1) and (list[5] != electedArray[5] or list[4] != electedArray[4]):
+    if (list[3] != electedArray[3]):
+        if frequencyGuess[letterToNumber(list[3])] > frequencyElected[letterToNumber(list[3])]:
+            color3 = "gray"
+            frequencyGuess[letterToNumber(list[3])] = frequencyGuess[letterToNumber(list[3])] - 1
+        elif frequencyGuess[letterToNumber(list[3])] <= frequencyElected[letterToNumber(list[3])]:
             color3 = "yellow"
-        elif (frequencyGuess == 2 and frequencyOG == 2) and (list[5] != electedArray[5] or list[4] != electedArray[4]):
-            color3 = "yellow"
-        elif (frequencyGuess == 3 and frequencyOG == 3) and (list[5] != electedArray[5] or list[4] != electedArray[4]):
-            color3 = "yellow"
-        else:        
-            if list[3] == electedArray[5] and list[5] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if list[3] == electedArray[4] and list[4] == electedArray[4]:
-                frequencyOG = frequencyOG - 1 
-            if frequencyGuess > frequencyOG:
-                color3 = "gray"
-            elif (frequencyGuess <= frequencyOG):
-                color3 = "yellow"
-    
-    
-    #third letter
-    if(list[2] == electedArray[2]):
-        color2 = "green"
-        
-    elif(list[2] != electedArray[2]):
-        frequencyOG = 0
-        frequencyGuess = 0
-        for i in range(6):
-            if electedArray[i] == list[2]:
-                frequencyOG = frequencyOG + 1
-        for i in range(3):
-            if list[i] == list[2]:
-                frequencyGuess = frequencyGuess + 1
-                
-        if (frequencyGuess == 1 and frequencyOG == 1) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3]):
-            color2 = "yellow"
-        elif (frequencyGuess == 2 and frequencyOG == 2) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3]):
-            color2 = "yellow"
-        elif (frequencyGuess == 3 and frequencyOG == 3) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3]):
-            color2 = "yellow"
-        else:        
-            if list[2] == electedArray[5] and list[5] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if list[2] == electedArray[4] and list[4] == electedArray[4]:
-                frequencyOG = frequencyOG - 1
-            if list[2] == electedArray[3] and list[3] == electedArray[3]:
-                frequencyOG = frequencyOG - 1
-            if frequencyGuess > frequencyOG:
-                color2 = "gray"
-            elif (frequencyGuess <= frequencyOG):
-                color2 = "yellow"
+            frequencyGuess[letterToNumber(list[3])] = frequencyGuess[letterToNumber(list[3])] - 1
             
     
+    #third letter
+    if (list[2] == electedArray[2]):
+        color2 = "green"
+        frequencyElected[letterToNumber(list[2])] = frequencyElected[letterToNumber(list[2])] - 1
+        frequencyGuess[letterToNumber(list[2])] = frequencyGuess[letterToNumber(list[2])] - 1
+        
+    if (list[2] != electedArray[2]):
+        if frequencyGuess[letterToNumber(list[2])] > frequencyElected[letterToNumber(list[2])]:
+            color2 = "gray"
+            frequencyGuess[letterToNumber(list[2])] = frequencyGuess[letterToNumber(list[2])] - 1
+        elif frequencyGuess[letterToNumber(list[2])] <= frequencyElected[letterToNumber(list[2])]:
+            color2 = "yellow"
+            frequencyGuess[letterToNumber(list[2])] = frequencyGuess[letterToNumber(list[2])] - 1
+    
+    
     #second letter
-    if(list[1] == electedArray[1]):
+    if (list[1] == electedArray[1]):
         color1 = "green"
+        frequencyElected[letterToNumber(list[1])] = frequencyElected[letterToNumber(list[1])] - 1
+        frequencyGuess[letterToNumber(list[1])] = frequencyGuess[letterToNumber(list[1])] - 1
         
-    elif(list[1] != electedArray[1]):
-        frequencyOG = 0
-        frequencyGuess = 0
-        for i in range(6):
-            if electedArray[i] == list[1]:
-                frequencyOG = frequencyOG + 1
-        for i in range(2):
-            if list[i] == list[1]:
-                frequencyGuess = frequencyGuess + 1
-        
-        if (frequencyGuess == 1 and frequencyOG == 1) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3] or list[2] != electedArray[2]):
+    if (list[1] != electedArray[1]):
+        if frequencyGuess[letterToNumber(list[1])] > frequencyElected[letterToNumber(list[1])]:
+            color1 = "gray"
+            frequencyGuess[letterToNumber(list[1])] = frequencyGuess[letterToNumber(list[1])] - 1
+        elif frequencyGuess[letterToNumber(list[1])] <= frequencyElected[letterToNumber(list[1])]:
             color1 = "yellow"
-        elif (frequencyGuess == 2 and frequencyOG == 2) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3] or list[2] != electedArray[2]):
-            color1 = "yellow"
-        elif (frequencyGuess == 3 and frequencyOG == 3) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3] or list[2] != electedArray[2]):
-            color1 = "yellow"
-        else:        
-            if list[1] == electedArray[5] and list[5] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if list[1] == electedArray[4] and list[4] == electedArray[4]:
-                frequencyOG = frequencyOG - 1
-            if list[1] == electedArray[3] and list[3] == electedArray[3]:
-                frequencyOG = frequencyOG - 1
-            if list[1] == electedArray[2] and list[2] == electedArray[2]:
-                frequencyOG = frequencyOG - 1 
-            if frequencyGuess > frequencyOG:
-                color1 = "gray"
-            elif (frequencyGuess <= frequencyOG):
-                color1 = "yellow"
-        
+            frequencyGuess[letterToNumber(list[1])] = frequencyGuess[letterToNumber(list[1])] - 1
+            
     
     #first letter
-    if(list[0] == electedArray[0]):
+    if (list[0] == electedArray[0]):
         color0 = "green"
+        frequencyElected[letterToNumber(list[0])] = frequencyElected[letterToNumber(list[0])] - 1
+        frequencyGuess[letterToNumber(list[0])] = frequencyGuess[letterToNumber(list[0])] - 1
         
-    if(list[0] != electedArray[0]):
-        frequencyOG = 0
-        frequencyGuess = 1
-        for i in range(6):
-            if electedArray[i] == list[0]:
-                frequencyOG = frequencyOG + 1
-        
-        if (frequencyGuess == 1 and frequencyOG == 1) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3] or list[2] != electedArray[2] or list[1] != electedArray[1]):
-            color0 = "yellow"
-        elif (frequencyGuess == 2 and frequencyOG == 2) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3] or list[2] != electedArray[2] or list[1] != electedArray[1]):
-            color0 = "yellow"
-        elif (frequencyGuess == 3 and frequencyOG == 3) and (list[5] != electedArray[5] or list[4] != electedArray[4] or list[3] != electedArray[3] or list[2] != electedArray[2] or list[1] != electedArray[1]):
-            color0 = "yellow"
-        else:    
-            if list[5] == electedArray[5] and list[0] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if list[4] == electedArray[4] and list[0] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if list[3] == electedArray[3] and list[0] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if list[2] == electedArray[2] and list[0] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if list[1] == electedArray[1] and list[0] == electedArray[5]:
-                frequencyOG = frequencyOG - 1
-            if frequencyGuess > frequencyOG:
-                color0 = "gray"
-            elif (frequencyGuess <= frequencyOG):
-                color0 = "yellow"
+    if (list[0] != electedArray[0]):
+        if frequencyGuess[letterToNumber(list[0])] > frequencyElected[letterToNumber(list[0])]:
+            color0 = "gray"
+        elif frequencyGuess[letterToNumber(list[0])] <= frequencyElected[letterToNumber(list[0])]:
+            color0 = "yellow"       
+    
             
          
 
     
     return [color0,color1,color2,color3,color4,color5]
-            
-
-            
             
             
             
@@ -470,6 +436,8 @@ def checkAnswerFive(list):
         fiveWord4.config(bg=determineColor(list)[3])
         fiveWord5.config(bg=determineColor(list)[4])
         fiveWord6.config(bg=determineColor(list)[5])
+        losingPrompt = "Unlucky, The word was: " + electedWord
+        prompt.config(text=losingPrompt)
         
         
         
@@ -544,9 +512,9 @@ oneWord6.place(x=495,y=150)
 #Getting the user's selection and checking the status of the word compared to the original word
 sv1 = StringVar()
 sv1.trace("w", lambda name, index, mode, sv1=sv1: callback(sv1))
-oneWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",1),textvariable=sv1,)
+oneWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",8),textvariable=sv1,)
 oneWord.bind('<Return>',setWordOne)
-oneWord.place(x=100,y=250)
+oneWord.place(x=100,y=250,height = 30,)
 
 
 
@@ -568,7 +536,7 @@ twoWord6.place(x=495,y=220)
 #Getting the user's selection and checking the status of the word compared to the original word
 sv2 = StringVar()
 sv2.trace("w", lambda name, index, mode, sv2=sv2: callback(sv2))
-twoWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",1),textvariable=sv2,)
+twoWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",),textvariable=sv2,)
 twoWord.bind('<Return>',setWordTwo)
 
 
@@ -590,7 +558,7 @@ threeWord6.place(x=495,y=290)
 
 sv3 = StringVar()
 sv3.trace("w", lambda name, index, mode, sv3=sv3: callback(sv3))
-threeWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",1),textvariable=sv3,)
+threeWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",4),textvariable=sv3,)
 threeWord.bind('<Return>',setWordThree)
 
 
@@ -616,7 +584,7 @@ fourWord6.place(x=495,y=360)
 
 sv4 = StringVar()
 sv4.trace("w", lambda name, index, mode, sv4=sv4: callback(sv4))
-fourWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",1),textvariable=sv4,)
+fourWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",4),textvariable=sv4,)
 fourWord.bind('<Return>',setWordFour)
 
 
@@ -637,7 +605,7 @@ fiveWord6.place(x=495,y=430)
 
 sv5 = StringVar()
 sv5.trace("w", lambda name, index, mode, sv5=sv5: callback(sv5))
-fiveWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",1),textvariable=sv5,)
+fiveWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",4),textvariable=sv5,)
 fiveWord.bind('<Return>',setWordFive)
 
 
