@@ -3,22 +3,32 @@ from tkinter import *
 from WordDatabase import *
 import random
 
+
+
+
+
+#########################################
+#Setting up initial variables and widgets
+#########################################
+
+
+
+
 #Vairables
 HEIGHT = 800
 WIDTH = 800
 electedWord = random.choice(listOfWords).upper()
-electedArray = []
-
+electedArray = [] 
+global onTurn
+onTurn = 0
 
 #Putting each letter of the correct word into an array
 for i in electedWord:
     electedArray.append(i)
 print(electedWord)
 
-
 #Creating the main window
 root = tk.Tk()
-
 
 #Setting up the canvas for the application
 canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
@@ -31,130 +41,139 @@ root.resizable(0,0) #makes program unresizeable
 
 
 
-
-
-
-
-
-
-
+#################
 #Useful Functions
+#################
 
-#setWord*****: takes the user's guess and turns it into a string, where each index is displayed onto the box. Also sanitizes the data
-#for word one
-def setWordOne(guessOne):
-    oneArray = []
-    guessOne = sv1.get().upper()
-    print (guessOne)
-    for i in guessOne:
-        oneArray.append(i)
-    #case if the word is not acceptable    
-    if ((len(oneArray)) != 6) or guessOne.isalpha() == False:
-        oneWord.delete(0, "end")
-        prompt.configure(text="Invalid entry, please try again")
-        return
-    prompt.configure(text="One down, four to go!")
-    oneWord.destroy()
-    twoWord.place(x=100,y=325)
-    oneWord1.config(text=oneArray[0])
-    oneWord2.config(text=oneArray[1])
-    oneWord3.config(text=oneArray[2])
-    oneWord4.config(text=oneArray[3])
-    oneWord5.config(text=oneArray[4])
-    oneWord6.config(text=oneArray[5])
-    checkAnswerOne(oneArray)
+
+
+
+
+#setWord takes the user's guess and turns it into a string, where each index is displayed onto the box. Also sanitizes the data
+def setWord(guess):
     
-
-#for word two
-def setWordTwo(guessTwo):
-    twoArray = []
-    guessTwo = sv2.get().upper()
-    print (guessTwo)
-    for i in guessTwo:
-        twoArray.append(i)
-    #case if the word is not acceptable    
-    if ((len(twoArray)) != 6) or guessTwo.isalpha() == False:
-        twoWord.delete(0, "end")
-        prompt.configure(text="Invalid entry, please try again")
-        return
-    prompt.configure(text="Two down, three to go!")
-    twoWord.destroy()
-    threeWord.place(x=100,y=400)
-    twoWord1.config(text=twoArray[0])
-    twoWord2.config(text=twoArray[1])
-    twoWord3.config(text=twoArray[2])
-    twoWord4.config(text=twoArray[3])
-    twoWord5.config(text=twoArray[4])
-    twoWord6.config(text=twoArray[5])
-    checkAnswerTwo(twoArray)
+    global onTurn
+    #guess one
+    if (onTurn == 0):
+        guessOne = guess
+        oneArray = []
+        guessOne = sv.get().upper()
+        print (guessOne)
+        for i in guessOne:
+            oneArray.append(i)
+        #case if the word is not acceptable    
+        if (isLegal(guessOne) == False):
+            guesser.delete(0, "end")
+            prompt.configure(text="Invalid entry, please try again")
+            return
+        prompt.configure(text="One down, four to go!")
+        oneWord1.config(text=oneArray[0])
+        oneWord2.config(text=oneArray[1])
+        oneWord3.config(text=oneArray[2])
+        oneWord4.config(text=oneArray[3])
+        oneWord5.config(text=oneArray[4])
+        oneWord6.config(text=oneArray[5])
+        checkAnswerOne(oneArray)
+        onTurn = onTurn + 1
+        guesser.delete(0, "end")
     
-#for word three
-def setWordThree(guessThree):
-    threeArray = []
-    guessThree = sv3.get().upper()
-    print (guessThree)
-    for i in guessThree:
-        threeArray.append(i)
-    #case if the word is not acceptable    
-    if ((len(threeArray)) != 6) or guessThree.isalpha() == False:
-        threeWord.delete(0, "end")
-        prompt.configure(text="Invalid entry, please try again")
-        return
-    prompt.configure(text="Three down, two to go!")
-    threeWord.destroy()
-    fourWord.place(x=100,y=475)
-    threeWord1.config(text=threeArray[0])
-    threeWord2.config(text=threeArray[1])
-    threeWord3.config(text=threeArray[2])
-    threeWord4.config(text=threeArray[3])
-    threeWord5.config(text=threeArray[4])
-    threeWord6.config(text=threeArray[5])  
-    checkAnswerThree(threeArray)
+    #guess two
+    elif(onTurn == 1):
+        guessTwo = guess
+        twoArray = []
+        guessTwo = sv.get().upper()
+        print (guessTwo)
+        for i in guessTwo:
+            twoArray.append(i)
+        #case if the word is not acceptable    
+        if (isLegal(guessTwo) == False):
+            guesser.delete(0, "end")
+            prompt.configure(text="Invalid entry, please try again")
+            return
+        prompt.configure(text="Two down, three to go!")
+        twoWord1.config(text=twoArray[0])
+        twoWord2.config(text=twoArray[1])
+        twoWord3.config(text=twoArray[2])
+        twoWord4.config(text=twoArray[3])
+        twoWord5.config(text=twoArray[4])
+        twoWord6.config(text=twoArray[5])
+        checkAnswerTwo(twoArray)
+        onTurn = onTurn + 1
+        guesser.delete(0, "end")
     
-#for word four
-def setWordFour(guessFour):
-    fourArray = []
-    guessFour = sv4.get().upper()
-    print (guessFour)
-    for i in guessFour:
-        fourArray.append(i)
-    #case if the word is not acceptable    
-    if ((len(fourArray)) != 6) or guessFour.isalpha() == False:
-        fourWord.delete(0, "end")
-        prompt.configure(text="Invalid entry, please try again")
-        return
-    prompt.configure(text="Last Chance!!!!")
-    fourWord.destroy()
-    fiveWord.place(x=100,y=550)
-    fourWord1.config(text=fourArray[0])
-    fourWord2.config(text=fourArray[1])
-    fourWord3.config(text=fourArray[2])
-    fourWord4.config(text=fourArray[3])
-    fourWord5.config(text=fourArray[4])
-    fourWord6.config(text=fourArray[5])  
-    checkAnswerFour(fourArray) 
-
-#for word five
-def setWordFive(guessFive):
-    fiveArray = []
-    guessFive = sv5.get().upper()
-    print (guessFive)
-    for i in guessFive:
-        fiveArray.append(i)
-    #case if the word is not acceptable    
-    if ((len(fiveArray)) != 6) or guessFive.isalpha() == False:
-        fiveWord.delete(0, "end")
-        prompt.configure(text="Invalid entry, please try again")
-        return
-    fiveWord.destroy()
-    fiveWord1.config(text=fiveArray[0])
-    fiveWord2.config(text=fiveArray[1])
-    fiveWord3.config(text=fiveArray[2])
-    fiveWord4.config(text=fiveArray[3])
-    fiveWord5.config(text=fiveArray[4])
-    fiveWord6.config(text=fiveArray[5])  
-    checkAnswerFive(fiveArray)        
-
+    #guess three
+    elif(onTurn == 2):
+        guessThree = guess
+        threeArray = []
+        guessThree = sv.get().upper()
+        print (guessThree)
+        for i in guessThree:
+            threeArray.append(i)
+        #case if the word is not acceptable    
+        if (isLegal(guessThree) == False):
+            guesser.delete(0, "end")
+            prompt.configure(text="Invalid entry, please try again")
+            return
+        prompt.configure(text="Three down, two to go!")
+        threeWord1.config(text=threeArray[0])
+        threeWord2.config(text=threeArray[1])
+        threeWord3.config(text=threeArray[2])
+        threeWord4.config(text=threeArray[3])
+        threeWord5.config(text=threeArray[4])
+        threeWord6.config(text=threeArray[5])  
+        checkAnswerThree(threeArray)
+        onTurn = onTurn + 1
+        guesser.delete(0, "end")
+    
+    # guess four
+    elif(onTurn == 3):
+        guessFour = guess
+        fourArray = []
+        guessFour = sv.get().upper()
+        print (guessFour)
+        for i in guessFour:
+            fourArray.append(i)
+        #case if the word is not acceptable    
+        if (isLegal(guessFour) == False):
+            guesser.delete(0, "end")
+            prompt.configure(text="Invalid entry, please try again")
+            return
+        prompt.configure(text="Last Chance!!!!")
+        fourWord1.config(text=fourArray[0])
+        fourWord2.config(text=fourArray[1])
+        fourWord3.config(text=fourArray[2])
+        fourWord4.config(text=fourArray[3])
+        fourWord5.config(text=fourArray[4])
+        fourWord6.config(text=fourArray[5])  
+        checkAnswerFour(fourArray)
+        onTurn = onTurn + 1
+        guesser.delete(0, "end")
+    
+    #guess Five
+    elif(onTurn == 4):
+        guessFive = guess
+        fiveArray = []
+        guessFive = sv.get().upper()
+        print (guessFive)
+        for i in guessFive:
+            fiveArray.append(i)
+        #case if the word is not acceptable    
+        if (isLegal(guessFive) == False):
+            guesser.delete(0, "end")
+            prompt.configure(text="Invalid entry, please try again")
+            return
+        fiveWord1.config(text=fiveArray[0])
+        fiveWord2.config(text=fiveArray[1])
+        fiveWord3.config(text=fiveArray[2])
+        fiveWord4.config(text=fiveArray[3])
+        fiveWord5.config(text=fiveArray[4])
+        fiveWord6.config(text=fiveArray[5])  
+        checkAnswerFive(fiveArray)
+        guesser.delete(0, "end")  
+        
+        
+              
+#letterToNumber: takes a letter input and assigns it to a number. Used in the checkNumber methods to asses the frequency of the letter in a string
 def letterToNumber(char):
     if (char == 'A'):
         return 0 
@@ -209,6 +228,9 @@ def letterToNumber(char):
     if (char == 'Z'):
         return 25
 
+
+
+#determines the color of which letter is the guess is going to be based off of the frequencies of the letters in the two words
 def determineColor(list):
     color5 = ""
     color4 = ""
@@ -239,8 +261,7 @@ def determineColor(list):
         elif frequencyGuess[letterToNumber(list[5])] <= frequencyElected[letterToNumber(list[5])]:
             color5 = "yellow"
             frequencyGuess[letterToNumber(list[5])] = frequencyGuess[letterToNumber(list[5])] - 1
-            
-            
+                
     #fifth letter
     if (list[4] == electedArray[4]):
         color4 = "green"
@@ -269,7 +290,6 @@ def determineColor(list):
             color3 = "yellow"
             frequencyGuess[letterToNumber(list[3])] = frequencyGuess[letterToNumber(list[3])] - 1
             
-    
     #third letter
     if (list[2] == electedArray[2]):
         color2 = "green"
@@ -283,7 +303,6 @@ def determineColor(list):
         elif frequencyGuess[letterToNumber(list[2])] <= frequencyElected[letterToNumber(list[2])]:
             color2 = "yellow"
             frequencyGuess[letterToNumber(list[2])] = frequencyGuess[letterToNumber(list[2])] - 1
-    
     
     #second letter
     if (list[1] == electedArray[1]):
@@ -299,7 +318,6 @@ def determineColor(list):
             color1 = "yellow"
             frequencyGuess[letterToNumber(list[1])] = frequencyGuess[letterToNumber(list[1])] - 1
             
-    
     #first letter
     if (list[0] == electedArray[0]):
         color0 = "green"
@@ -312,26 +330,11 @@ def determineColor(list):
         elif frequencyGuess[letterToNumber(list[0])] <= frequencyElected[letterToNumber(list[0])]:
             color0 = "yellow"       
     
-            
-         
-
-    
     return [color0,color1,color2,color3,color4,color5]
             
             
-            
-            
-            
-            
-
     
-        
-        
-        
-        
-
-    
-#Checks the similarities among the chosen word and actual word
+#checkAnswer1-6: Updates the interface to match the color of the square that was found
 def checkAnswerOne(list):
     
     #Case 1: the answer is correct
@@ -343,7 +346,8 @@ def checkAnswerOne(list):
         oneWord5.config(bg="green")
         oneWord6.config(bg="green")
         winningPrompt = "CONGRATS!!! The word was: " + electedWord
-        prompt.config(text=winningPrompt) 
+        prompt.config(text=winningPrompt)
+        guesser.destroy()
         
     else:
         oneWord1.config(bg=determineColor(list)[0])
@@ -365,6 +369,7 @@ def checkAnswerTwo(list):
         twoWord6.config(bg="green")
         winningPrompt = "CONGRATS!!! The word was: " + electedWord
         prompt.config(text=winningPrompt) 
+        guesser.destroy()
         
     else:
         twoWord1.config(bg=determineColor(list)[0])
@@ -386,6 +391,7 @@ def checkAnswerThree(list):
         threeWord6.config(bg="green")
         winningPrompt = "CONGRATS!!! The word was: " + electedWord
         prompt.config(text=winningPrompt) 
+        guesser.destroy()
         
     else:
         threeWord1.config(bg=determineColor(list)[0])
@@ -407,6 +413,7 @@ def checkAnswerFour(list):
         fourWord6.config(bg="green")
         winningPrompt = "CONGRATS!!! The word was: " + electedWord
         prompt.config(text=winningPrompt) 
+        guesser.destroy()
         
     else:
         fourWord1.config(bg=determineColor(list)[0])
@@ -428,6 +435,7 @@ def checkAnswerFive(list):
         fiveWord6.config(bg="green")
         winningPrompt = "CONGRATS!!! The word was: " + electedWord
         prompt.config(text=winningPrompt) 
+        guesser.destroy()
         
     else:
         fiveWord1.config(bg=determineColor(list)[0])
@@ -436,32 +444,33 @@ def checkAnswerFive(list):
         fiveWord4.config(bg=determineColor(list)[3])
         fiveWord5.config(bg=determineColor(list)[4])
         fiveWord6.config(bg=determineColor(list)[5])
-        losingPrompt = "Unlucky, The word was: " + electedWord
+        losingPrompt = "Unlucky, the word was: " + electedWord
         prompt.config(text=losingPrompt)
+        guesser.destroy()
         
-        
-        
-        
-        
+    
+           
 #makes sure the tracing is working   
 def callback(sv):
     print (sv.get())
         
     
 
+#Checks if the user's input was in the database
+def isLegal(word):
+    isLegal = False
+    for i in listOfWords:
+        if i == word:
+            isLegal = True
+    return isLegal
 
 
 
 
 
-
-
-
-
-
-
-
-
+#########################
+#Setting up the interface
+#########################
 
 
 
@@ -494,7 +503,6 @@ prompt = tk.Label(background,bg="#dbbaf2",width=40,height=4,text="Hello User, We
 prompt.place(x=98,y=525)
 
 
-
 #Setting up the boxes for the first word
 oneWord1 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
 oneWord1.place(x=95,y=150)
@@ -508,15 +516,6 @@ oneWord5 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text=
 oneWord5.place(x=415,y=150)
 oneWord6 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
 oneWord6.place(x=495,y=150)
-
-#Getting the user's selection and checking the status of the word compared to the original word
-sv1 = StringVar()
-sv1.trace("w", lambda name, index, mode, sv1=sv1: callback(sv1))
-oneWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",8),textvariable=sv1,)
-oneWord.bind('<Return>',setWordOne)
-oneWord.place(x=100,y=250,height = 30,)
-
-
 
 
 #Setting up the boxes for the second word
@@ -533,14 +532,6 @@ twoWord5.place(x=415,y=220)
 twoWord6 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
 twoWord6.place(x=495,y=220)
 
-#Getting the user's selection and checking the status of the word compared to the original word
-sv2 = StringVar()
-sv2.trace("w", lambda name, index, mode, sv2=sv2: callback(sv2))
-twoWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",),textvariable=sv2,)
-twoWord.bind('<Return>',setWordTwo)
-
-
-
 
 #Setting up the boxes for the third word
 threeWord1 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
@@ -555,17 +546,6 @@ threeWord5 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",tex
 threeWord5.place(x=415,y=290)
 threeWord6 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
 threeWord6.place(x=495,y=290)
-
-sv3 = StringVar()
-sv3.trace("w", lambda name, index, mode, sv3=sv3: callback(sv3))
-threeWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",4),textvariable=sv3,)
-threeWord.bind('<Return>',setWordThree)
-
-
-
-
-
-
 
 
 #Setting up the boxes for the fourth word
@@ -582,15 +562,9 @@ fourWord5.place(x=415,y=360)
 fourWord6 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
 fourWord6.place(x=495,y=360)
 
-sv4 = StringVar()
-sv4.trace("w", lambda name, index, mode, sv4=sv4: callback(sv4))
-fourWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",4),textvariable=sv4,)
-fourWord.bind('<Return>',setWordFour)
-
-
 
 #Setting up the boxes for the fifth word
-fiveWord1 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
+fiveWord1 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="") 
 fiveWord1.place(x=95,y=430)
 fiveWord2 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
 fiveWord2.place(x=175,y=430)
@@ -603,23 +577,13 @@ fiveWord5.place(x=415,y=430)
 fiveWord6 = tk.Label(background,bg="gray",width=4,height=2,font="Helvetica",text="")
 fiveWord6.place(x=495,y=430)
 
-sv5 = StringVar()
-sv5.trace("w", lambda name, index, mode, sv5=sv5: callback(sv5))
-fiveWord = tk.Entry(bg="#dbbaf2",font=("Helvetica",4),textvariable=sv5,)
-fiveWord.bind('<Return>',setWordFive)
+#extracting the User's input
+sv = StringVar()
+sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
+guesser = tk.Entry(bg="#dbbaf2",font=("Helvetica",8),textvariable=sv,justify = "center")
+guesser.bind('<Return>',setWord)
+guesser.place(x=375,y=190,height = 30 , width = 50)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Running the app
 root.mainloop()
